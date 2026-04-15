@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JUNTO — MVP Product Brief v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0C0C0E;
+  --surface: #151518;
+  --surface-2: #1C1C21;
+  --surface-3: #222228;
+  --border: #2A2A30;
+  --border-light: #35353D;
+  --text: #E8E6E1;
+  --text-dim: #8A8A8F;
+  --text-muted: #5A5A60;
+  --accent: #F0C456;
+  --accent-dim: rgba(240,196,86,0.10);
+  --accent-border: rgba(240,196,86,0.2);
+  --coral: #E8735A;
+  --coral-dim: rgba(232,115,90,0.10);
+  --coral-border: rgba(232,115,90,0.2);
+  --teal: #56C4B8;
+  --teal-dim: rgba(86,196,184,0.10);
+  --teal-border: rgba(86,196,184,0.2);
+  --lavender: #9B8FE8;
+  --lavender-dim: rgba(155,143,232,0.10);
+  --lavender-border: rgba(155,143,232,0.2);
+  --green: #6BCB77;
+  --green-dim: rgba(107,203,119,0.10);
+  --pink: #E88FA0;
+  --pink-dim: rgba(232,143,160,0.10);
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'DM Sans', -apple-system, sans-serif;
+  --max-w: 940px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:var(--sans); font-size:16px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+.container { max-width:var(--max-w); margin:0 auto; padding:0 32px; }
+@media(max-width:600px){ .container{padding:0 20px;} }
+
+/* NAV */
+.nav { position:fixed; top:0; left:0; right:0; z-index:50; padding:16px 32px; display:flex; justify-content:space-between; align-items:center; background:rgba(12,12,14,0.85); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); }
+.nav-logo { font-family:var(--serif); font-size:20px; color:var(--accent); }
+.nav-meta { font-size:12px; color:var(--text-dim); letter-spacing:0.06em; }
+
+/* HERO */
+.hero { min-height:100vh; display:flex; flex-direction:column; justify-content:center; position:relative; overflow:hidden; padding-top:80px; }
+.hero::before { content:''; position:absolute; top:-30%; left:-15%; width:600px; height:600px; background:radial-gradient(circle, rgba(240,196,86,0.06) 0%, transparent 70%); pointer-events:none; }
+.hero::after { content:''; position:absolute; bottom:-20%; right:-10%; width:400px; height:400px; background:radial-gradient(circle, rgba(86,196,184,0.04) 0%, transparent 70%); pointer-events:none; }
+.hero-badge { display:inline-flex; align-items:center; gap:8px; padding:6px 14px; background:var(--accent-dim); border:1px solid var(--accent-border); border-radius:100px; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); margin-bottom:32px; width:fit-content; animation:fadeUp .8s ease both; }
+.hero h1 { font-family:var(--serif); font-size:clamp(52px,8vw,88px); font-weight:400; line-height:1.0; letter-spacing:-0.02em; margin-bottom:12px; animation:fadeUp .8s .1s ease both; }
+.hero h1 em { font-style:italic; color:var(--accent); }
+.hero-sub { font-family:var(--serif); font-size:clamp(20px,3vw,30px); font-weight:400; font-style:italic; color:var(--text-dim); margin-bottom:24px; animation:fadeUp .8s .15s ease both; }
+.hero-desc { font-size:17px; color:var(--text-dim); max-width:680px; line-height:1.7; margin-bottom:48px; animation:fadeUp .8s .2s ease both; }
+.hero-meta { display:flex; gap:32px; flex-wrap:wrap; animation:fadeUp .8s .25s ease both; }
+.hero-meta-item { display:flex; flex-direction:column; gap:4px; }
+.hero-meta-label { font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted); }
+.hero-meta-value { font-size:15px; color:var(--text); }
+
+.hero-cards { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:56px; animation:fadeUp .8s .3s ease both; }
+@media(max-width:640px){ .hero-cards{grid-template-columns:1fr;} }
+.hero-card { padding:24px; background:var(--surface); border:1px solid var(--border); border-radius:14px; }
+.hero-card-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.12em; margin-bottom:8px; }
+.hero-card p { font-family:var(--serif); font-size:18px; font-style:italic; line-height:1.45; }
+
+/* SECTIONS */
+.section { padding:100px 0 0; }
+.section-num { font-size:11px; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-muted); margin-bottom:12px; }
+.section-title { font-family:var(--serif); font-size:clamp(34px,5vw,50px); font-weight:400; line-height:1.1; margin-bottom:16px; }
+.section-lead { font-size:17px; color:var(--text-dim); max-width:660px; line-height:1.65; }
+
+/* CARDS GRID */
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:40px; }
+.grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:40px; }
+@media(max-width:768px){ .grid-3{grid-template-columns:1fr;} .grid-2{grid-template-columns:1fr;} }
+
+.card { padding:28px; background:var(--surface); border:1px solid var(--border); border-radius:16px; transition:border-color .3s, transform .3s; }
+.card:hover { transform:translateY(-2px); }
+.card.full { grid-column:1/-1; }
+.card-icon { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; margin-bottom:16px; }
+.card h3 { font-family:var(--sans); font-size:15px; font-weight:600; margin-bottom:8px; }
+.card p, .card li { font-size:14px; color:var(--text-dim); line-height:1.6; }
+.card ul { list-style:none; padding:0; }
+.card ul li { padding:3px 0; padding-left:16px; position:relative; }
+.card ul li::before { content:'→'; position:absolute; left:0; color:var(--text-muted); font-size:12px; }
+
+/* STAT */
+.stat-big { font-family:var(--serif); font-size:52px; font-weight:400; line-height:1; }
+.stat-med { font-family:var(--serif); font-size:36px; font-weight:400; line-height:1; }
+.stat-label { font-size:13px; color:var(--text-dim); margin-top:4px; }
+.stat-row { display:flex; gap:48px; margin:16px 0; flex-wrap:wrap; }
+.stat-vs { display:flex; align-items:center; gap:20px; margin:12px 0; }
+.stat-vs-divider { font-size:13px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.08em; }
+
+/* CALLOUT */
+.callout { margin-top:32px; padding:24px 28px; border-left:3px solid var(--accent); border-radius:0 12px 12px 0; background:var(--accent-dim); }
+.callout.coral { border-left-color:var(--coral); background:var(--coral-dim); }
+.callout.teal { border-left-color:var(--teal); background:var(--teal-dim); }
+.callout.lavender { border-left-color:var(--lavender); background:var(--lavender-dim); }
+.callout p { font-size:15px; line-height:1.6; }
+.callout strong { color:var(--accent); }
+.callout.coral strong { color:var(--coral); }
+.callout.teal strong { color:var(--teal); }
+
+/* BOARD INSIGHT */
+.board { margin-top:24px; padding:20px 24px; background:var(--surface-2); border:1px solid var(--border); border-radius:12px; }
+.board-label { font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--lavender); margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+.board-label::before { content:'◆'; font-size:8px; }
+.board p { font-size:14px; color:var(--text-dim); line-height:1.6; }
+.board p + p { margin-top:8px; }
+
+/* PRINCIPLE */
+.principle { padding:28px 24px; background:var(--surface); border:1px solid var(--border); border-radius:16px; transition:border-color .3s, transform .3s; }
+.principle:hover { transform:translateY(-2px); }
+.principle-num { font-size:11px; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:12px; }
+.principle h3 { font-family:var(--serif); font-size:21px; font-weight:400; line-height:1.25; margin-bottom:10px; }
+.principle p { font-size:14px; color:var(--text-dim); line-height:1.55; }
+.principle-tag { display:inline-block; margin-top:12px; padding:4px 10px; border-radius:100px; font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:0.06em; }
+.principle .board { margin-top:16px; }
+
+/* LOOP */
+.loop-step { display:flex; gap:20px; padding:24px 0; border-bottom:1px solid var(--border); }
+.loop-step:last-child { border-bottom:none; }
+.loop-num { width:48px; height:48px; min-width:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:var(--serif); font-size:22px; font-weight:400; }
+.loop-content h3 { font-size:16px; font-weight:600; margin-bottom:6px; }
+.loop-content p { font-size:14px; color:var(--text-dim); line-height:1.55; }
+
+/* TIMELINE */
+.timeline { margin-top:40px; }
+.tl-phase { padding:28px; background:var(--surface); border:1px solid var(--border); border-radius:16px; margin-bottom:16px; position:relative; }
+.tl-phase::before { content:''; position:absolute; left:40px; top:100%; width:2px; height:16px; background:var(--border); }
+.tl-phase:last-child::before { display:none; }
+.tl-tag { display:inline-block; padding:4px 10px; border-radius:100px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:12px; }
+.tl-phase h3 { font-family:var(--serif); font-size:22px; font-weight:400; margin-bottom:8px; }
+.tl-phase>p { font-size:14px; color:var(--text-dim); line-height:1.55; }
+
+/* FEATURE */
+.feature-group { margin-top:40px; }
+.feature-group-header { padding:12px 20px; border-radius:10px; font-size:13px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:16px; display:inline-block; }
+.feature { padding:24px; background:var(--surface); border:1px solid var(--border); border-radius:14px; margin-bottom:12px; }
+.feature h4 { font-size:16px; font-weight:600; margin-bottom:6px; }
+.feature .what { font-size:14px; color:var(--text-dim); line-height:1.55; margin-bottom:10px; }
+.feature .why { font-size:13px; color:var(--text-dim); line-height:1.55; padding:12px 16px; background:var(--surface-2); border-radius:8px; }
+.feature .why strong { color:var(--text); }
+
+/* ROADMAP */
+.horizon { padding:32px; background:var(--surface); border:1px solid var(--border); border-radius:16px; margin-bottom:16px; }
+.horizon-tag { display:inline-block; padding:5px 12px; border-radius:100px; font-size:12px; font-weight:600; letter-spacing:0.04em; margin-bottom:16px; }
+.horizon h3 { font-family:var(--serif); font-size:24px; font-weight:400; margin-bottom:6px; }
+.horizon .question { font-family:var(--serif); font-size:16px; font-style:italic; color:var(--text-dim); margin-bottom:16px; }
+.horizon ul { list-style:none; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:6px 24px; }
+@media(max-width:640px){ .horizon ul{grid-template-columns:1fr;} }
+.horizon li { font-size:14px; color:var(--text-dim); padding:4px 0 4px 18px; position:relative; }
+.horizon li::before { content:'•'; position:absolute; left:0; font-weight:bold; }
+
+/* METRICS TABLE */
+.metrics { margin-top:40px; display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+@media(max-width:768px){ .metrics{grid-template-columns:1fr 1fr;} }
+.metric { padding:20px; background:var(--surface); border:1px solid var(--border); border-radius:14px; text-align:center; }
+.metric-name { font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-dim); margin-bottom:8px; }
+.metric-target { font-family:var(--serif); font-size:32px; }
+.metric-desc { font-size:12px; color:var(--text-muted); margin-top:4px; }
+.metric-alarm { font-size:11px; margin-top:8px; padding:3px 8px; border-radius:6px; display:inline-block; }
+
+/* PERSONA */
+.persona-box { margin-top:40px; padding:32px; background:var(--surface); border:1px solid var(--border); border-radius:16px; }
+.persona-header { display:flex; align-items:center; gap:20px; margin-bottom:20px; }
+.persona-avatar { width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg, var(--accent-dim), var(--teal-dim)); display:flex; align-items:center; justify-content:center; font-size:28px; }
+.persona-name { font-family:var(--serif); font-size:26px; }
+.persona-role { font-size:14px; color:var(--text-dim); }
+.persona-story { font-size:15px; color:var(--text-dim); line-height:1.65; font-style:italic; margin-bottom:20px; }
+.persona-cols { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+@media(max-width:640px){ .persona-cols{grid-template-columns:1fr;} }
+.persona-col h4 { font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px; }
+.persona-col li { font-size:14px; color:var(--text-dim); padding:4px 0; }
+
+/* COMPARE TABLE */
+.compare { margin-top:40px; border:1px solid var(--border); border-radius:16px; overflow:hidden; }
+.compare-row { display:grid; grid-template-columns:140px 1fr 1fr; border-bottom:1px solid var(--border); }
+.compare-row:last-child { border-bottom:none; }
+.compare-row.header { background:var(--surface-2); }
+.compare-cell { padding:14px 18px; font-size:14px; color:var(--text-dim); display:flex; align-items:center; }
+.compare-cell:not(:last-child) { border-right:1px solid var(--border); }
+.compare-row.header .compare-cell { font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted); }
+.compare-cell strong { color:var(--text); font-weight:600; }
+@media(max-width:640px){ .compare-row{grid-template-columns:1fr;} .compare-cell{border-right:none!important; border-bottom:1px solid var(--border);} .compare-row.header{display:none;} }
+
+/* QUESTIONS */
+.questions { margin-top:40px; }
+.question-group { margin-bottom:32px; }
+.question-group h3 { font-size:16px; font-weight:600; margin-bottom:12px; color:var(--accent); }
+.question-item { padding:14px 20px; background:var(--surface); border:1px solid var(--border); border-radius:10px; margin-bottom:8px; font-size:14px; color:var(--text-dim); line-height:1.5; }
+
+/* FOOTER */
+.footer { padding:80px 0; margin-top:80px; border-top:1px solid var(--border); }
+.footer-note { padding:28px 32px; background:var(--surface); border:1px solid var(--border); border-radius:16px; }
+.footer-note p { font-size:15px; color:var(--text-dim); line-height:1.6; }
+
+/* STORYBOARD */
+.sb-flow { margin-top:48px; position:relative; }
+.sb-flow::before { content:''; position:absolute; left:31px; top:0; bottom:0; width:2px; background:var(--border); z-index:0; }
+.sb-screen { position:relative; margin-bottom:32px; padding-left:80px; z-index:1; }
+.sb-screen:last-child { margin-bottom:0; }
+.sb-dot { position:absolute; left:20px; top:24px; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:var(--bg); z-index:2; }
+.sb-connector { position:absolute; left:37px; top:48px; bottom:-32px; width:0; border-left:2px dashed var(--border); display:none; }
+.sb-frame { background:var(--surface); border:1px solid var(--border); border-radius:16px; overflow:hidden; transition:border-color .3s, transform .3s; }
+.sb-frame:hover { transform:translateY(-2px); }
+.sb-frame-header { padding:20px 24px 16px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.sb-frame-step { font-size:11px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; }
+.sb-frame-emotion { font-size:12px; font-style:italic; padding:4px 10px; border-radius:100px; }
+.sb-frame-body { padding:24px; }
+.sb-phone { background:var(--surface-2); border:1px solid var(--border-light); border-radius:20px; padding:16px 20px; max-width:320px; margin:0 auto 20px; position:relative; }
+.sb-phone::before { content:''; position:absolute; top:6px; left:50%; transform:translateX(-50%); width:60px; height:4px; border-radius:4px; background:var(--border); }
+.sb-phone-content { padding-top:12px; min-height:180px; display:flex; flex-direction:column; gap:10px; }
+.sb-ph-title { font-family:var(--serif); font-size:16px; text-align:center; margin-bottom:4px; }
+.sb-ph-subtitle { font-size:11px; color:var(--text-muted); text-align:center; margin-bottom:8px; }
+.sb-ph-element { padding:10px 14px; background:var(--surface-3); border:1px solid var(--border-light); border-radius:10px; font-size:12px; color:var(--text-dim); }
+.sb-ph-button { padding:10px 14px; border-radius:10px; font-size:12px; font-weight:600; text-align:center; border:none; }
+.sb-ph-tag { display:inline-block; padding:5px 10px; border-radius:100px; font-size:11px; font-weight:500; margin:2px; }
+.sb-ph-match { padding:12px 14px; background:var(--surface-3); border:1px solid var(--border-light); border-radius:12px; display:flex; align-items:center; gap:10px; }
+.sb-ph-avatar { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; }
+.sb-ph-match-info { flex:1; }
+.sb-ph-match-name { font-size:13px; font-weight:600; }
+.sb-ph-match-detail { font-size:10px; color:var(--text-muted); line-height:1.4; }
+.sb-ph-slider { height:6px; border-radius:3px; background:var(--border); position:relative; margin:6px 0; }
+.sb-ph-slider-fill { position:absolute; left:0; top:0; height:100%; border-radius:3px; }
+.sb-ph-slider-label { display:flex; justify-content:space-between; font-size:10px; color:var(--text-muted); }
+.sb-annotations { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:4px; }
+@media(max-width:640px){ .sb-annotations{grid-template-columns:1fr;} }
+.sb-anno { padding:14px 16px; border-radius:10px; }
+.sb-anno-label { font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:5px; }
+.sb-anno p { font-size:12px; line-height:1.5; color:var(--text-dim); }
+
+/* ANIM */
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.spacer { height:40px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">JUNTO</div>
+  <div class="nav-meta">MVP Product Brief v2.0 · Abril 2026</div>
+</nav>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 1: HERO                            -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="hero">
+<div class="container">
+  <div class="hero-badge">Documento de exploración · Oscar + Nico</div>
+  <h1>JUNTO<br><em>The Remote<br>Social Layer</em></h1>
+  <p class="hero-sub">Reconectando personas en un mundo que las aísla y polariza</p>
+  <p class="hero-desc">JUNTO es una app que conecta trabajadores remotos con personas compatibles para trabajar juntos desde casas, cafeterías, bibliotecas o cualquier espacio compartido. No es un coworking. No es una red social. No es una agenda compartida. Es una capa social sobre el trabajo remoto que reconstruye lo que la oficina daba de forma orgánica — pero ahora de forma intencional y personalizada.</p>
+
+  <div class="hero-meta">
+    <div class="hero-meta-item"><span class="hero-meta-label">Fase</span><span class="hero-meta-value">Exploración / Pre-MVP</span></div>
+    <div class="hero-meta-item"><span class="hero-meta-label">Base</span><span class="hero-meta-value">Denver, Colorado</span></div>
+    <div class="hero-meta-item"><span class="hero-meta-label">Target</span><span class="hero-meta-value">Remote workers 25-35</span></div>
+    <div class="hero-meta-item"><span class="hero-meta-label">Fecha</span><span class="hero-meta-value">Abril 2026</span></div>
+  </div>
+
+  <div class="hero-cards">
+    <div class="hero-card">
+      <div class="hero-card-label" style="color:var(--accent)">North Star Metric</div>
+      <p><strong style="color:var(--accent)">Meaningful Connections per Week (MCW)</strong> — sesiones donde ambas personas reportan experiencia positiva. Captura matching + acción real + valor percibido en un solo número.</p>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-label" style="color:var(--teal)">Visión a largo plazo</div>
+      <p>El MVP es coworking remoto. Debajo estamos construyendo un <strong style="color:var(--teal)">motor de matching psicológico</strong> que escala a emprendimiento, amistad, equipos, matching cultural. El motor del auto que después va en un camión, un bote o un avión.</p>
+    </div>
+  </div>
+
+  <div class="board" style="margin-top:32px;">
+    <div class="board-label">Por qué JUNTO puede ser mejor que la oficina</div>
+    <p>En la oficina interactúas con gente que RRHH contrató. En JUNTO, las conexiones se basan en compatibilidad psicológica real. La oficina es siempre el mismo lugar — JUNTO te conecta en bibliotecas, parques, cafeterías. La oficina te mete en una burbuja de industria — JUNTO te expone a personas diversas intencionalmente. Y en la oficina las interacciones son porque "toca" — en JUNTO, cada sesión es una decisión activa, lo que neurológicamente genera más satisfacción.</p>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 2: THE PROBLEM + NEUROSCIENCE      -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section">
+<div class="container">
+  <div class="section-num">02 — El problema</div>
+  <h2 class="section-title">Tu cerebro en<br>modo remoto</h2>
+  <p class="section-lead">El trabajo remoto resolvió la flexibilidad pero creó soledad estructural. No es soledad emocional — tienes familia, amigos. Es la ausencia de interacción casual, espontánea y productiva durante la jornada laboral. Y la neurociencia muestra que el impacto va mucho más allá de "sentirse solo."</p>
+
+  <!-- Market stats -->
+  <div class="card full" style="margin-top:40px; background:var(--accent-dim); border-color:var(--accent-border);">
+    <h3 style="color:var(--accent);">El mercado</h3>
+    <div class="stat-row">
+      <div><div class="stat-big" style="color:var(--accent)">37M</div><div class="stat-label">remote workers en EE.UU. (22.6% de la fuerza laboral)</div></div>
+      <div><div class="stat-big" style="color:var(--accent)">5-8M</div><div class="stat-label">reportan soledad como problema principal</div></div>
+      <div><div class="stat-big" style="color:var(--accent)">39%</div><div class="stat-label">de 24-35 años trabaja full remote</div></div>
+    </div>
+    <p style="font-size:14px;color:var(--text-dim);margin-top:12px;">El Surgeon General declaró la soledad como emergencia de salud pública. Antes de la pandemia, menos del 6% trabajaba remoto. El cambio es estructural, no temporal. El 80% de quienes pueden trabajar remoto ya lo hacen (52% híbrido + 27% full remote).</p>
+  </div>
+
+  <!-- Neuro cards -->
+  <div class="grid-2" style="margin-top:20px;">
+
+    <!-- Card 1 -->
+    <div class="card" style="border-color:var(--accent-border) transparent transparent transparent;">
+      <div class="card-icon" style="background:var(--accent-dim)">🧠</div>
+      <h3>El cerebro no sincroniza por pantalla</h3>
+      <div class="stat-vs">
+        <div style="text-align:center"><div class="stat-big" style="color:var(--accent)">9</div><div class="stat-label">conexiones<br>cara a cara</div></div>
+        <div class="stat-vs-divider">vs</div>
+        <div style="text-align:center"><div class="stat-big" style="color:var(--coral)">1</div><div class="stat-label">conexión<br>por Zoom</div></div>
+      </div>
+      <p>Estudio con fNIRS (Nature Scientific Reports) + investigación de Joy Hirsch en Yale. La señalización neural durante intercambios online está sustancialmente suprimida. Por Zoom te ven pero tu cerebro no los "siente."</p>
+      <div class="board">
+        <div class="board-label">Implicancia para JUNTO</div>
+        <p>Cada sesión presencial genera 9x más conexión cerebral que una videollamada. Esto sustenta la decisión de que JUNTO sea presencial, no virtual. El warm-up del Session Blueprint está diseñado para maximizar esta sincronización a través de contacto visual sostenido + escucha activa.</p>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="card" style="border-color:var(--coral-border) transparent transparent transparent;">
+      <div class="card-icon" style="background:var(--coral-dim)">📉</div>
+      <h3>El aislamiento encoge el cerebro</h3>
+      <div class="stat-big" style="color:var(--coral);margin:8px 0">-7%</div>
+      <div class="stat-label" style="margin-bottom:12px">volumen cerebral en regiones de aprendizaje y memoria</div>
+      <p>Max Planck Institute (estudio antártica, 14 meses de aislamiento). También niveles reducidos de BDNF — proteína de regulación de estrés y memoria. Berlin Aging Study (300+ participantes): alta soledad correlaciona con menor materia gris en hipocampo y amígdala.</p>
+      <div class="board">
+        <div class="board-label">Implicancia para JUNTO</div>
+        <p>Posiciona a JUNTO no como app social sino como herramienta de salud cognitiva. "Tu cerebro social necesita ejercicio" es un mensaje potente. Conecta directamente con el social fitness tracker y la metáfora de JUNTO como gimnasio social.</p>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="card" style="border-color:var(--teal-border) transparent transparent transparent;">
+      <div class="card-icon" style="background:var(--teal-dim)">👁</div>
+      <h3>Perdemos las señales de confianza</h3>
+      <p>Yale Brain Function Lab (Joy Hirsch, Imaging Neuroscience): la actividad neural en procesamiento facial baja significativamente en Zoom. Dilatación pupilar y tiempo de mirada aumentan en persona. El contacto visual, micro-gestos, lenguaje corporal — lo que construye confianza no se transmite por pantalla.</p>
+      <div class="board">
+        <div class="board-label">Implicancia para JUNTO</div>
+        <p>Refuerza que las interacciones presenciales son irremplazables. El warm-up con preguntas que generan contacto visual sostenido está diseñado para activar procesamiento facial completo. Además: oxitocina (hormona de confianza) se libera durante contacto visual y sintonización emocional — Kosfeld et al. 2005.</p>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="card" style="border-color:var(--lavender-border) transparent transparent transparent;">
+      <div class="card-icon" style="background:var(--lavender-dim)">⚡</div>
+      <h3>Body doubling: la presencia enciende el cerebro</h3>
+      <p>La simple presencia de otra persona trabajando a tu lado activa circuitos de recompensa dopaminérgica (Kopec, Smith & Bilbo, 2019). Documentado desde 1898 (Triplett). Para ADHD es especialmente potente: niveles reducidos de dopamina en corteza prefrontal hacen que el arreglo social induzca la liberación que necesitan (Barkley, 2014).</p>
+      <div class="board">
+        <div class="board-label">Implicancia para JUNTO</div>
+        <p>JUNTO ES una plataforma de body doubling. La "facilitación social" aplica a TODOS los remote workers, no solo ADHD. Cuando trabajas solo tu cerebro está en baja activación. Cuando trabajas al lado de alguien — aunque cada uno esté en lo suyo — tu cerebro se enciende. La estructura de la sesión reconoce que hay tanto valor en el silencio compartido como en la conversación.</p>
+      </div>
+    </div>
+
+    <!-- Card 5: Diet -->
+    <div class="card" style="border-color:var(--green-dim) transparent transparent transparent;">
+      <div class="card-icon" style="background:var(--green-dim)">🥗</div>
+      <h3>"Dieta social" — use it or lose it</h3>
+      <p>Ben Rein (Stanford, "Why Brains Need Friends"): la conexión social es tan esencial como el sueño, la dieta y el ejercicio. Cada automatización (ATM, Instacart, telemedicina, trabajo remoto) elimina un punto de contacto que alimentaba esa dieta sin que nos diéramos cuenta.</p>
+      <div class="board">
+        <div class="board-label">Implicancia para JUNTO</div>
+        <p>Es la metáfora central del producto. JUNTO es el "gimnasio" de tu dieta social. Nadie más está usando este framing. Abre la puerta al modelo B2B como beneficio corporativo de bienestar: "Tu empresa te da JUNTO para tu salud social" — como Headspace para salud mental.</p>
+      </div>
+    </div>
+
+    <!-- Card 6: Serendipity -->
+    <div class="card" style="border-color:var(--pink-dim) transparent transparent transparent;">
+      <div class="card-icon" style="background:var(--pink-dim)">✨</div>
+      <h3>Serendipidad e innovación</h3>
+      <p>Cambridge Judge Business School: casi 70% de avances innovadores ocurren en interacciones espontáneas, no reuniones. Pixar diseñó sus oficinas con atrio central para forzar encuentros casuales. Granovetter: "weak ties" aportan más oportunidades que tu círculo cercano. Burt (2004): "structural holes."</p>
+      <div class="board">
+        <div class="board-label">Implicancia para JUNTO</div>
+        <p>JUNTO es la Pixar de los remote workers. El serendipity mode replica el pasillo de la oficina pero mejor: con personas seleccionadas por compatibilidad, no por azar corporativo. Los wild cards están fundamentados en esta misma ciencia de weak ties.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <p><strong>Síntesis para Nico:</strong> No estamos construyendo solo una app de matching. Estamos resolviendo un problema de salud cerebral documentado por Yale, Stanford, Max Planck, y el Surgeon General. JUNTO le devuelve al cerebro lo que la pantalla le quitó: sincronización neural, señales de confianza, diversidad de estímulos, y estructura para la "dieta social" que el trabajo remoto eliminó.</p>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 3: COMPETITORS                     -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section">
+<div class="container">
+  <div class="section-num">03 — Landscape</div>
+  <h2 class="section-title">Por qué nada<br>funciona hoy</h2>
+  <p class="section-lead">Todas las soluciones actuales resuelven una parte del problema pero dejan un vacío enorme.</p>
+
+  <div class="compare">
+    <div class="compare-row header">
+      <div class="compare-cell">Solución</div>
+      <div class="compare-cell">Qué hace</div>
+      <div class="compare-cell">Qué le falta</div>
+    </div>
+    <div class="compare-row"><div class="compare-cell"><strong>Coworkings</strong></div><div class="compare-cell">Espacio físico compartido</div><div class="compare-cell">No te conecta con nadie. Vas, trabajas solo, te vas.</div></div>
+    <div class="compare-row"><div class="compare-cell"><strong>Meetup</strong></div><div class="compare-cell">Eventos por interés</div><div class="compare-cell">Eventos puntuales, no relaciones recurrentes.</div></div>
+    <div class="compare-row"><div class="compare-cell"><strong>Bumble BFF</strong></div><div class="compare-cell">Match de amigos</div><div class="compare-cell">Selección por fotos (superficial). No orientado a trabajo.</div></div>
+    <div class="compare-row"><div class="compare-cell"><strong>Focusmate</strong></div><div class="compare-cell">Sesión de video con desconocido</div><div class="compare-cell">Virtual, aleatorio, sin matching real.</div></div>
+    <div class="compare-row"><div class="compare-cell"><strong>LinkedIn</strong></div><div class="compare-cell">Red profesional</div><div class="compare-cell">Pasivo, frustrante, no incentiva interacción real.</div></div>
+  </div>
+
+  <div class="board" style="margin-top:24px;">
+    <div class="board-label">El vacío que llena JUNTO</div>
+    <p>Ninguna de estas soluciones cruza matching psicológico + presencialidad + estructura de sesión + feedback loop. Focusmate es lo más cercano, pero es virtual y aleatorio — exactamente lo que la neurociencia dice que no genera sincronización cerebral. Los coworkings dan presencialidad pero cero conexión intencional. JUNTO es la única intersección de las tres variables.</p>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 4: PERSONA                         -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section">
+<div class="container">
+  <div class="section-num">04 — User persona</div>
+  <h2 class="section-title">Conoce a Sarah</h2>
+
+  <div class="persona-box">
+    <div class="persona-header">
+      <div class="persona-avatar">👩‍💻</div>
+      <div><div class="persona-name">Sarah, 29 años — Denver</div><div class="persona-role">Product Manager · Fintech startup · 100% remoto</div></div>
+    </div>
+    <p class="persona-story">Vive con su pareja y su perro. Le encanta su flexibilidad pero odia trabajar sola. Se levanta tarde cuando no tiene reuniones, procrastina, y termina trabajando de noche. Ha probado cafeterías pero se siente rara sola ahí. Tiene vecinos remotos pero no lo sabe. Paga Headspace y Simple Piano. No pagaría por una app social, pero la usaría todos los días si le resolviera el problema.</p>
+    <div class="persona-cols">
+      <div class="persona-col">
+        <h4 style="color:var(--coral)">Frustraciones</h4>
+        <ul style="list-style:none;padding:0;">
+          <li>Se siente sola durante el día laboral</li>
+          <li>LinkedIn le parece frío y frustrante</li>
+          <li>Los intentos de networking se sienten artificiales</li>
+          <li>No conoce a nadie remoto cerca con cosas en común</li>
+        </ul>
+      </div>
+      <div class="persona-col">
+        <h4 style="color:var(--teal)">Lo que le resonaría</h4>
+        <ul style="list-style:none;padding:0;">
+          <li>Una app que le arme su semana social</li>
+          <li>No tener que elegir por fotos</li>
+          <li>Descubrir que su vecino es un match perfecto</li>
+          <li>Sentir que cada interacción fue valiosa</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 5: DESIGN PRINCIPLES               -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section">
+<div class="container">
+  <div class="section-num">05 — Design Principles</div>
+  <h2 class="section-title">Los 6 filtros de<br>cada decisión</h2>
+  <p class="section-lead">Si una feature viola alguno de estos principios, hay que replantearla. Cada uno nació de un análisis profundo — acá está el por qué de cada uno.</p>
+
+  <div class="grid-3" style="margin-top:40px;">
+
+    <!-- P1 -->
+    <div class="principle" style="border-top:2px solid var(--accent);">
+      <div class="principle-num" style="color:var(--accent)">Principio 01</div>
+      <h3>La app recomienda, el usuario no scrollea</h3>
+      <p>Sin galerías de perfiles, sin swipe, sin "me gusta." La app presenta 3-5 personas con una explicación de por qué cree que van a conectar. Cada "no" es invisible para la otra persona y alimenta al algoritmo.</p>
+      <span class="principle-tag" style="background:var(--accent-dim);color:var(--accent)">Anti-Tinder</span>
+      <div class="board">
+        <div class="board-label">Razonamiento del board</div>
+        <p>Hinge validó esto al rediseñar su app bajo "designed to be deleted" — dejaron de optimizar por scroll y empezaron a optimizar por matches que funcionan. Adam Grant aportó: las personas no son buenos predictores de lo que les hará felices — eligen por criterios superficiales cuando los predictores reales son valores compartidos y estilos de comunicación.</p>
+        <p>La explicación del match (Cambio #9) reduce ansiedad ("ya sé por qué me la recomienda"), da temas de conversación para el warm-up, y post-sesión se valida para cerrar el loop de mejora. Muestra tanto lo COMÚN como lo COMPLEMENTARIO.</p>
+      </div>
+    </div>
+
+    <!-- P2 -->
+    <div class="principle" style="border-top:2px solid var(--coral);">
+      <div class="principle-num" style="color:var(--coral)">Principio 02</div>
+      <h3>Cada interacción debe sentirse valiosa</h3>
+      <p>Pocas conexiones, pero cada una significativa. No hay competencia entre usuarios. El test: ¿esta pantalla se siente como LinkedIn/Tinder o se siente como JUNTO?</p>
+      <span class="principle-tag" style="background:var(--coral-dim);color:var(--coral)">Anti-LinkedIn</span>
+      <div class="board">
+        <div class="board-label">Razonamiento del board</div>
+        <p>Conecta con la "paradoja de la elección" (Barry Schwartz): más opciones no significan mejor resultado. LinkedIn da acceso a millones de perfiles y el resultado es parálisis e insatisfacción. Un menú de 200 platos genera parálisis — un chef que te recomienda 3 basados en tus gustos genera confianza y mejores resultados.</p>
+      </div>
+    </div>
+
+    <!-- P3 -->
+    <div class="principle" style="border-top:2px solid var(--teal);">
+      <div class="principle-num" style="color:var(--teal)">Principio 03</div>
+      <h3>Romper la burbuja, no reforzarla</h3>
+      <p>Wild cards: 2-3 de cada 10 recomendaciones son personas fuera del perfil obvio. La app equipa con tips culturales. "No es tu match obvio, pero creemos que te va a sorprender."</p>
+      <span class="principle-tag" style="background:var(--teal-dim);color:var(--teal)">Wild Cards</span>
+      <div class="board">
+        <div class="board-label">Razonamiento del board</div>
+        <p>Adam Grant sustentó con investigación de "weak ties" (Granovetter): las personas que más te aportan oportunidades son las que NO están en tu círculo. Las apps actuales optimizan para tu zona de confort porque genera engagement a corto plazo. JUNTO hace lo contrario — te saca de tu burbuja de forma segura. Esto le da al proyecto una narrativa que a inversores y medios les encanta: no es solo negocio, es misión.</p>
+        <p>El mecanismo de validación: si interactuaste genuinamente con el wild card, desbloqueas más wild cards. Esto conecta con el Principio 4.</p>
+      </div>
+    </div>
+
+    <!-- P4 -->
+    <div class="principle" style="border-top:2px solid var(--lavender);">
+      <div class="principle-num" style="color:var(--lavender)">Principio 04</div>
+      <h3>Ganas más conectando, no pagando</h3>
+      <p>Sin paywall. La "moneda" es tu disposición a conectar. Juntarte y dar feedback desbloquea más opciones. El más valioso no es el que paga más, sino el que más se conecta.</p>
+      <span class="principle-tag" style="background:var(--lavender-dim);color:var(--lavender)">Free to connect</span>
+      <div class="board">
+        <div class="board-label">Razonamiento del board</div>
+        <p>Nir Eyal se entusiasmó: esto alinea el incentivo del usuario con el de la plataforma — exactamente lo que los mejores productos logran. En Tinder el usuario más valioso es el que paga (pero no necesariamente conecta). En JUNTO, el que más conecta genuinamente genera la mejor data para el algoritmo, mejorando los matches de todos. Círculo virtuoso.</p>
+        <p>Anti-fantasma: para validar que te juntaste, compartes algo que solo sabrías si estuviste con la persona. Resuelve tres cosas: evita fantasmas, premia interacción real, y genera modelo sin cobrar.</p>
+      </div>
+    </div>
+
+    <!-- P5 -->
+    <div class="principle" style="border-top:2px solid var(--accent);">
+      <div class="principle-num" style="color:var(--accent)">Principio 05</div>
+      <h3>El onboarding es descubrimiento personal</h3>
+      <p>Llegar a consulta de un buen psicólogo: preguntas simples, aprendizaje sobre uno mismo. Valores en torneo visual, rueda de la vida con sliders, ikigai simplificado. Sales sabiendo más de ti.</p>
+      <span class="principle-tag" style="background:var(--accent-dim);color:var(--accent)">Self-discovery</span>
+      <div class="board">
+        <div class="board-label">Razonamiento del board</div>
+        <p>La componente educativa (Cambio #3): la app le explica al usuario POR QUÉ le pregunta cada cosa. "Usamos selección de valores porque la ciencia muestra que personas que comparten 3 de 5 valores principales tienen alta probabilidad de sinergia." Esto genera confianza — la persona no llena un formulario a ciegas, aprende sobre sí misma. Los ejercicios vienen de coaching validado científicamente: Values Card Sort, Wheel of Life, Ikigai.</p>
+      </div>
+    </div>
+
+    <!-- P6 -->
+    <div class="principle" style="border-top:2px solid var(--coral);">
+      <div class="principle-num" style="color:var(--coral)">Principio 06</div>
+      <h3>Diseñado para ADHD</h3>
+      <p>Todo en menos de 60 segundos con una mano. Tags antes que texto. Micro-recompensas en cada paso. Si no lo usaría alguien con déficit atencional, no vale construirlo.</p>
+      <span class="principle-tag" style="background:var(--coral-dim);color:var(--coral)">60 sec rule</span>
+      <div class="board">
+        <div class="board-label">Razonamiento del board</div>
+        <p>Nació de la observación: "si yo tengo que escribir un review, me da lata hacerlo." Nir Eyal validó: "si la acción requiere más esfuerzo del que la motivación justifica, el usuario no la hace. Punto." Hinge confirmó: reemplazaron texto libre por prompts con opciones y engagement se duplicó.</p>
+        <p>Esto transformó múltiples features: feedback pasó de pregunta abierta a tags tocables en 10 segundos, evaluación de lugares pasó de review escrito a iconos, onboarding pasó de formulario a juego visual. Nunca texto libre cuando puedes dar opciones. Nunca pantalla estática cuando puedes dar feedback en tiempo real. Nunca un proceso largo sin recompensa intermedia.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 6: CORE LOOP                       -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section">
+<div class="container">
+  <div class="section-num">06 — Core loop</div>
+  <h2 class="section-title">El ciclo que tiene<br>que funcionar</h2>
+  <p class="section-lead">Si este loop no genera retención, nada más importa. Todo el MVP se diseña para maximizar la probabilidad de que el usuario complete el primer loop lo antes posible.</p>
+
+  <div style="margin-top:40px;">
+    <div class="loop-step">
+      <div class="loop-num" style="background:var(--accent-dim);color:var(--accent)">1</div>
+      <div class="loop-content">
+        <h3>Onboarding — 5 min, sales sabiendo más de ti</h3>
+        <p>Dos vías: (a) ejercicios de coaching interactivos — valores en torneo visual, rueda de la vida con sliders, ikigai simplificado — donde cada paso explica qué es, de dónde viene, y cómo mejora tus matches. (b) Prompt de IA que genera un perfil profundo desde tu historial de conversaciones. Progresivo: semana 1 preguntas de superficie tipo Hinge, semana 3+ preguntas profundas y situacionales opcionales. Tres capas que van revelando quién eres sin que sientas que llenas formularios.</p>
+      </div>
+    </div>
+    <div class="loop-step">
+      <div class="loop-num" style="background:var(--teal-dim);color:var(--teal)">2</div>
+      <div class="loop-content">
+        <h3>Match — 3-5 personas con explicación</h3>
+        <p>El algoritmo cruza perfiles psicológicos, ubicación, horarios, tipo y estilo de trabajo. Cada recomendación incluye una explicación: "Comparten creatividad, libertad, honestidad. Ella trabaja en diseño y tú en finanzas — perspectivas complementarias. Vive a 10 min y prefiere bloques de 45 min." Incluye 1 wild card con mensaje especial.</p>
+      </div>
+    </div>
+    <div class="loop-step">
+      <div class="loop-num" style="background:var(--lavender-dim);color:var(--lavender)">3</div>
+      <div class="loop-content">
+        <h3>Coordinación — tipo de sesión + lugar</h3>
+        <p>Aceptan el match y coordinan: día, hora, tipo (coworking / social / mixta), lugar (mi casa, tu casa, o público del directorio con pros y contras). Chat básico integrado para detalles.</p>
+      </div>
+    </div>
+    <div class="loop-step">
+      <div class="loop-num" style="background:var(--coral-dim);color:var(--coral)">4</div>
+      <div class="loop-content">
+        <h3>Sesión — Session Blueprint adaptativo</h3>
+        <p>Trabajan juntos siguiendo la estructura que la app sugiere: warm-up, bloques de trabajo, breaks, cool-down. Se adapta al estilo de ambos. Detalle completo en la sección siguiente.</p>
+      </div>
+    </div>
+    <div class="loop-step">
+      <div class="loop-num" style="background:var(--green-dim);color:var(--green)">5</div>
+      <div class="loop-content">
+        <h3>Feedback — tags en 10 segundos</h3>
+        <p>8-10 tags visuales tocables + validación de interacción real + mini encuesta del lugar con iconos. Triple función: entrena algoritmo, valida que ocurrió, y entrena al usuario a buscar lo positivo.</p>
+      </div>
+    </div>
+    <div class="loop-step">
+      <div class="loop-num" style="background:var(--accent-dim);color:var(--accent)">6</div>
+      <div class="loop-content">
+        <h3>Mejora — el siguiente match es mejor</h3>
+        <p>El feedback entrena al algoritmo. Completar feedback desbloquea más opciones. Vuelve al paso 2 con mejor data y más matches disponibles.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout coral" style="margin-top:24px;">
+    <p><strong style="color:var(--coral)">Hipótesis central:</strong> Si una persona completa este loop 3 veces en 2 semanas, se queda. Si no lo completa ni una vez, la perdemos.</p>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 6B: PRODUCT STORYBOARD             -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section">
+<div class="container">
+  <div class="section-num">06B — Product storyboard</div>
+  <h2 class="section-title">Lo que Sarah ve<br>en cada paso</h2>
+  <p class="section-lead">El journey completo del core loop: qué ve el usuario, qué siente, por qué funciona, y los hooks de behavioral design detrás de cada momento. Esto no es UI final — es el mapa de la experiencia que después se convierte en diseño.</p>
+
+  <div class="sb-flow">
+
+    <!-- ──── SCREEN 1: ONBOARDING ──── -->
+    <div class="sb-screen">
+      <div class="sb-dot" style="background:var(--accent)">1</div>
+      <div class="sb-frame" style="border-top:2px solid var(--accent);">
+        <div class="sb-frame-header">
+          <div class="sb-frame-step" style="color:var(--accent)">Onboarding · Pantalla inicial</div>
+          <div class="sb-frame-emotion" style="background:var(--accent-dim);color:var(--accent)">Emoción: curiosidad + descubrimiento</div>
+        </div>
+        <div class="sb-frame-body">
+          <div class="sb-phone">
+            <div class="sb-phone-content">
+              <div class="sb-ph-title" style="color:var(--accent)">Conozcámonos</div>
+              <div class="sb-ph-subtitle">Para conectarte con las personas correctas,<br>necesitamos entender quién eres</div>
+              <div class="sb-ph-element" style="border-color:var(--accent-border);">
+                <span style="font-weight:600;color:var(--accent)">Vía rápida:</span> ¿Usas IA? Tu historial tiene un perfil riquísimo →
+              </div>
+              <div class="sb-ph-element">
+                <span style="font-weight:600;color:var(--text)">Vía interactiva:</span> 3 ejercicios de coaching · 5 min · sales sabiendo más de ti →
+              </div>
+              <div style="font-size:10px;color:var(--text-muted);text-align:center;margin-top:4px;">Cada pregunta te explica por qué la hacemos</div>
+            </div>
+          </div>
+
+          <div class="sb-annotations">
+            <div class="sb-anno" style="background:var(--accent-dim);">
+              <div class="sb-anno-label" style="color:var(--accent)">🧠 Behavioral design</div>
+              <p><strong style="color:var(--text)">Trigger:</strong> curiosidad ("¿qué dice mi historial de IA sobre mí?"). <strong style="color:var(--text)">Recompensa variable:</strong> descubrimiento personal — la persona aprende algo nuevo de sí misma en cada paso. <strong style="color:var(--text)">Inversión:</strong> cada respuesta mejora sus matches futuros.</p>
+            </div>
+            <div class="sb-anno" style="background:var(--surface-2);">
+              <div class="sb-anno-label" style="color:var(--lavender)">💡 Product thinking</div>
+              <p>No es un formulario — es una experiencia. El torneo de valores ("¿creatividad o estabilidad?") se siente como juego. La rueda de la vida se llena visualmente en tiempo real. Cada paso explica: "preguntamos esto porque la ciencia muestra que..." Transparencia genera confianza.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ──── SCREEN 1B: VALUES TOURNAMENT ──── -->
+    <div class="sb-screen">
+      <div class="sb-dot" style="background:var(--accent)">1b</div>
+      <div class="sb-frame" style="border-top:2px solid var(--accent);">
+        <div class="sb-frame-header">
+          <div class="sb-frame-step" style="color:var(--accent)">Onboarding · Torneo de valores</div>
+          <div class="sb-frame-emotion" style="background:var(--accent-dim);color:var(--accent)">Emoción: "esto es divertido"</div>
+        </div>
+        <div class="sb-frame-body">
+          <div class="sb-phone">
+            <div class="sb-phone-content">
+              <div class="sb-ph-title">¿Qué te define más?</div>
+              <div class="sb-ph-subtitle">Ronda 3 de 5</div>
+              <div style="display:flex;gap:8px;">
+                <div class="sb-ph-button" style="flex:1;background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-border);">Creatividad</div>
+                <div class="sb-ph-button" style="flex:1;background:var(--surface-3);color:var(--text-dim);border:1px solid var(--border);">Estabilidad</div>
+              </div>
+              <div style="display:flex;gap:8px;">
+                <div class="sb-ph-button" style="flex:1;background:var(--surface-3);color:var(--text-dim);border:1px solid var(--border);">Libertad</div>
+                <div class="sb-ph-button" style="flex:1;background:var(--surface-3);color:var(--text-dim);border:1px solid var(--border);">Comunidad</div>
+              </div>
+              <div style="text-align:center;padding:8px;background:var(--surface-3);border-radius:8px;">
+                <div style="font-size:10px;color:var(--text-muted);">Tus top 5 hasta ahora</div>
+                <div style="display:flex;justify-content:center;gap:4px;margin-top:4px;">
+                  <span class="sb-ph-tag" style="background:var(--accent-dim);color:var(--accent);">Creatividad</span>
+                  <span class="sb-ph-tag" style="background:var(--accent-dim);color:var(--accent);">Honestidad</span>
+                  <span class="sb-ph-tag" style="background:var(--border);color:var(--text-muted);">?</span>
+                  <span class="sb-ph-tag" style="background:var(--border);color:var(--text-muted);">?</span>
+                  <span class="sb-ph-tag" style="background:var(--border);color:var(--text-muted);">?</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="sb-annotations">
+            <div class="sb-anno" style="background:var(--accent-dim);">
+              <div class="sb-anno-label" style="color:var(--accent)">🧠 Behavioral design</div>
+              <p><strong style="color:var(--text)">Principio ADHD:</strong> binario, un toque, sin texto. La barra de progreso y los tags que aparecen son micro-recompensas visuales. Formato torneo = gamification sutil. 2 min máximo.</p>
+            </div>
+            <div class="sb-anno" style="background:var(--surface-2);">
+              <div class="sb-anno-label" style="color:var(--lavender)">💡 Product thinking</div>
+              <p>Dos personas que comparten 3 de 5 valores principales tienen alta probabilidad de sinergia. Este ejercicio solo (Values Card Sort, validado en coaching) genera data más rica que un test de 50 preguntas. Y la persona se queda pensando en sus resultados.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ──── SCREEN 2: MATCH ──── -->
+    <div class="sb-screen">
+      <div class="sb-dot" style="background:var(--teal)">2</div>
+      <div class="sb-frame" style="border-top:2px solid var(--teal);">
+        <div class="sb-frame-header">
+          <div class="sb-frame-step" style="color:var(--teal)">Match · Recomendaciones del día</div>
+          <div class="sb-frame-emotion" style="background:var(--teal-dim);color:var(--teal)">Emoción: anticipación + intriga</div>
+        </div>
+        <div class="sb-frame-body">
+          <div class="sb-phone">
+            <div class="sb-phone-content">
+              <div class="sb-ph-title" style="color:var(--teal)">Tus matches de hoy</div>
+              <div class="sb-ph-subtitle">3 personas + 1 wild card</div>
+
+              <div class="sb-ph-match" style="border-color:var(--teal-border);">
+                <div class="sb-ph-avatar" style="background:var(--teal-dim);">👩‍🎨</div>
+                <div class="sb-ph-match-info">
+                  <div class="sb-ph-match-name">Camila · <span style="color:var(--teal);font-weight:400;">92% match</span></div>
+                  <div class="sb-ph-match-detail">Comparten: creatividad, libertad, honestidad. Ella: diseño gráfico. Tú: fintech. A 8 min. Bloques de 45 min.</div>
+                </div>
+              </div>
+
+              <div class="sb-ph-match">
+                <div class="sb-ph-avatar" style="background:var(--lavender-dim);">👨‍💻</div>
+                <div class="sb-ph-match-info">
+                  <div class="sb-ph-match-name">Thomas · <span style="color:var(--text-dim);font-weight:400;">87% match</span></div>
+                  <div class="sb-ph-match-detail">Comparten: curiosidad, crecimiento. Él: data science. A 12 min. Prefiere conversación en breaks.</div>
+                </div>
+              </div>
+
+              <div class="sb-ph-match" style="border-color:var(--accent-border);background:var(--accent-dim);">
+                <div class="sb-ph-avatar" style="background:var(--accent-dim);">✨</div>
+                <div class="sb-ph-match-info">
+                  <div class="sb-ph-match-name" style="color:var(--accent)">Wild card</div>
+                  <div class="sb-ph-match-detail" style="color:var(--accent);">No es tu match obvio, pero creemos que te va a sorprender. Toca para descubrir por qué.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sb-annotations">
+            <div class="sb-anno" style="background:var(--teal-dim);">
+              <div class="sb-anno-label" style="color:var(--teal)">🧠 Behavioral design</div>
+              <p><strong style="color:var(--text)">Anti-Tinder:</strong> no scrolleas — ves 4 opciones curadas. <strong style="color:var(--text)">Recompensa variable:</strong> el wild card genera curiosidad ("¿quién será?"). <strong style="color:var(--text)">Reducción de ansiedad:</strong> la explicación del match da motivo concreto para aceptar. La otra persona nunca se entera del rechazo.</p>
+            </div>
+            <div class="sb-anno" style="background:var(--surface-2);">
+              <div class="sb-anno-label" style="color:var(--lavender)">💡 Product thinking</div>
+              <p>Cada match muestra lo COMÚN (valores compartidos) y lo COMPLEMENTARIO (industrias distintas). Eso comunica que la diversidad es parte del valor. La explicación se valida post-sesión: "¿coincidió la experiencia con lo que te dijimos?" — feedback loop para el algoritmo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ──── SCREEN 3: COORDINATION ──── -->
+    <div class="sb-screen">
+      <div class="sb-dot" style="background:var(--lavender)">3</div>
+      <div class="sb-frame" style="border-top:2px solid var(--lavender);">
+        <div class="sb-frame-header">
+          <div class="sb-frame-step" style="color:var(--lavender)">Coordinación · Armar la sesión</div>
+          <div class="sb-frame-emotion" style="background:var(--lavender-dim);color:var(--lavender)">Emoción: compromiso + control</div>
+        </div>
+        <div class="sb-frame-body">
+          <div class="sb-phone">
+            <div class="sb-phone-content">
+              <div class="sb-ph-title">Sesión con Camila</div>
+              <div style="display:flex;gap:6px;justify-content:center;">
+                <span class="sb-ph-tag" style="background:var(--teal-dim);color:var(--teal);">Coworking</span>
+                <span class="sb-ph-tag" style="background:var(--surface-3);color:var(--text-dim);">Social</span>
+                <span class="sb-ph-tag" style="background:var(--surface-3);color:var(--text-dim);">Mixta</span>
+              </div>
+              <div class="sb-ph-element"><span style="font-weight:600;color:var(--text)">📍 Lugar:</span> Huckleberry Roasters · ★ wifi · ★ enchufes · 🔇 bajo ruido · ☕ $</div>
+              <div class="sb-ph-element"><span style="font-weight:600;color:var(--text)">🕐 Horario:</span> Mar 10am - 1pm</div>
+              <div class="sb-ph-element" style="background:var(--lavender-dim);border-color:var(--lavender-border);">
+                <span style="font-size:10px;color:var(--lavender);font-weight:600;text-transform:uppercase;letter-spacing:0.08em;">Session Blueprint sugerido</span><br>
+                <span style="font-size:11px;color:var(--text-dim);">Warm-up 10 min → Bloques 45/10 → Cool-down 10 min</span><br>
+                <span style="font-size:10px;color:var(--text-muted);">Ambas prefieren silencio con breaks para conversar</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sb-annotations">
+            <div class="sb-anno" style="background:var(--lavender-dim);">
+              <div class="sb-anno-label" style="color:var(--lavender)">🧠 Behavioral design</div>
+              <p><strong style="color:var(--text)">Reducción de fricción:</strong> lugar recomendado con pros/contras, blueprint adaptado a ambos estilos. Todo está pre-configurado — Sarah solo confirma. <strong style="color:var(--text)">Eliminación de incertidumbre:</strong> saber qué esperar reduce cortisol y baja la barrera del primer encuentro.</p>
+            </div>
+            <div class="sb-anno" style="background:var(--surface-2);">
+              <div class="sb-anno-label" style="color:var(--lavender)">💡 Product thinking</div>
+              <p>El Session Blueprint no es rigidez — es seguridad. "Ambas prefieren silencio con breaks" viene del onboarding de ambas. La persona se siente entendida antes de llegar. El directorio con mood tags ("bueno para conversaciones profundas" vs "silencio con compañía") resuelve el dónde de forma inteligente.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ──── SCREEN 4: DURING SESSION ──── -->
+    <div class="sb-screen">
+      <div class="sb-dot" style="background:var(--coral)">4</div>
+      <div class="sb-frame" style="border-top:2px solid var(--coral);">
+        <div class="sb-frame-header">
+          <div class="sb-frame-step" style="color:var(--coral)">En la sesión · Warm-up + trabajo</div>
+          <div class="sb-frame-emotion" style="background:var(--coral-dim);color:var(--coral)">Emoción: conexión + flow</div>
+        </div>
+        <div class="sb-frame-body">
+          <div class="sb-phone">
+            <div class="sb-phone-content">
+              <div class="sb-ph-title" style="color:var(--coral)">Warm-up con Camila</div>
+              <div class="sb-ph-subtitle">Rompehielos sugeridos</div>
+              <div class="sb-ph-element" style="background:var(--coral-dim);border-color:var(--coral-border);">
+                <span style="color:var(--coral);font-size:13px;font-style:italic;">"¿En qué estás trabajando hoy?"</span>
+              </div>
+              <div class="sb-ph-element" style="background:var(--coral-dim);border-color:var(--coral-border);">
+                <span style="color:var(--coral);font-size:13px;font-style:italic;">"¿Qué es lo más interesante que te pasó esta semana?"</span>
+              </div>
+              <div style="text-align:center;padding:12px;border:1px dashed var(--border);border-radius:10px;margin-top:4px;">
+                <div style="font-size:20px;">🔇 45:00</div>
+                <div style="font-size:10px;color:var(--text-muted);">Bloque de trabajo · próximo break en 45 min</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sb-annotations">
+            <div class="sb-anno" style="background:var(--coral-dim);">
+              <div class="sb-anno-label" style="color:var(--coral)">🧠 Behavioral design</div>
+              <p><strong style="color:var(--text)">La app da las preguntas.</strong> Nadie inventa de qué hablar. Dispara contacto visual + escucha activa + empatía → sincronización neural (9 conexiones cerebrales). <strong style="color:var(--text)">Oxitocina:</strong> contacto visual sostenido libera la hormona de la confianza. El timer da estructura sin presión.</p>
+            </div>
+            <div class="sb-anno" style="background:var(--surface-2);">
+              <div class="sb-anno-label" style="color:var(--lavender)">💡 Product thinking</div>
+              <p>El warm-up es la fase más importante. Si no ocurre, la sesión se siente como "dos personas en una cafetería mirando sus laptops." El timer visible respeta al introvertido (sabe cuánto dura el silencio) y al extrovertido (sabe cuándo viene el break social). Body doubling activo: dopamina + calm engagement (polyvagal theory).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ──── SCREEN 5: FEEDBACK ──── -->
+    <div class="sb-screen">
+      <div class="sb-dot" style="background:var(--green)">5</div>
+      <div class="sb-frame" style="border-top:2px solid var(--green);">
+        <div class="sb-frame-header">
+          <div class="sb-frame-step" style="color:var(--green)">Feedback · Post-sesión</div>
+          <div class="sb-frame-emotion" style="background:var(--green-dim);color:var(--green)">Emoción: gratitud + logro</div>
+        </div>
+        <div class="sb-frame-body">
+          <div class="sb-phone">
+            <div class="sb-phone-content">
+              <div class="sb-ph-title" style="color:var(--green)">¿Cómo estuvo?</div>
+              <div class="sb-ph-subtitle">Toca lo que aplica · 10 segundos</div>
+              <div style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center;">
+                <span class="sb-ph-tag" style="background:var(--green-dim);color:var(--green);border:1px solid rgba(107,203,119,0.2);">✓ Buena conversación</span>
+                <span class="sb-ph-tag" style="background:var(--green-dim);color:var(--green);border:1px solid rgba(107,203,119,0.2);">✓ Respetuosa con silencios</span>
+                <span class="sb-ph-tag" style="background:var(--surface-3);color:var(--text-dim);border:1px solid var(--border);">Me hizo pensar distinto</span>
+                <span class="sb-ph-tag" style="background:var(--surface-3);color:var(--text-dim);border:1px solid var(--border);">Buena energía</span>
+                <span class="sb-ph-tag" style="background:var(--green-dim);color:var(--green);border:1px solid rgba(107,203,119,0.2);">✓ Quiero repetir</span>
+                <span class="sb-ph-tag" style="background:var(--surface-3);color:var(--text-dim);border:1px solid var(--border);">Aprendí algo nuevo</span>
+                <span class="sb-ph-tag" style="background:var(--surface-3);color:var(--text-dim);border:1px solid var(--border);">Puntual</span>
+                <span class="sb-ph-tag" style="background:var(--surface-3);color:var(--text-dim);border:1px solid var(--border);">Me sentí cómoda</span>
+              </div>
+              <div style="display:flex;gap:6px;margin-top:6px;">
+                <div class="sb-ph-element" style="flex:1;text-align:center;font-size:18px;padding:6px;">📶<br><span style="font-size:9px;">Wifi ✓</span></div>
+                <div class="sb-ph-element" style="flex:1;text-align:center;font-size:18px;padding:6px;">🔌<br><span style="font-size:9px;">Enchufes ✓</span></div>
+                <div class="sb-ph-element" style="flex:1;text-align:center;font-size:18px;padding:6px;">🔇<br><span style="font-size:9px;">Silencioso</span></div>
+                <div class="sb-ph-element" style="flex:1;text-align:center;font-size:18px;padding:6px;">👍<br><span style="font-size:9px;">Volvería</span></div>
+              </div>
+              <div class="sb-ph-button" style="background:var(--green);color:var(--bg);margin-top:4px;">Enviar feedback → Desbloquear 2 matches más</div>
+            </div>
+          </div>
+
+          <div class="sb-annotations">
+            <div class="sb-anno" style="background:var(--green-dim);">
+              <div class="sb-anno-label" style="color:var(--green)">🧠 Behavioral design</div>
+              <p><strong style="color:var(--text)">Principio ADHD en acción:</strong> 0 texto, todo con el pulgar, 10 segundos. <strong style="color:var(--text)">Función triple:</strong> (1) entrena algoritmo, (2) valida interacción real, (3) entrena a buscar lo positivo. <strong style="color:var(--text)">Mecanismo de desbloqueo:</strong> dar feedback = más matches. La "moneda" es conectar.</p>
+            </div>
+            <div class="sb-anno" style="background:var(--surface-2);">
+              <div class="sb-anno-label" style="color:var(--lavender)">💡 Product thinking</div>
+              <p>Hinge descubrió que prompts emocionales generan 10x más engagement que ratings numéricos. Los tags capturan data cualitativa sin esfuerzo. "Respetuosa con silencios" es una señal de matching que ningún test de personalidad capturaría. El lugar se evalúa con iconos en 5 segundos — contenido que crece solo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ──── SCREEN 6: LOOP CLOSES ──── -->
+    <div class="sb-screen">
+      <div class="sb-dot" style="background:var(--accent)">6</div>
+      <div class="sb-frame" style="border-top:2px solid var(--accent);">
+        <div class="sb-frame-header">
+          <div class="sb-frame-step" style="color:var(--accent)">Loop completo · Tu semana JUNTO</div>
+          <div class="sb-frame-emotion" style="background:var(--accent-dim);color:var(--accent)">Emoción: pertenencia + hábito</div>
+        </div>
+        <div class="sb-frame-body">
+          <div class="sb-phone">
+            <div class="sb-phone-content">
+              <div class="sb-ph-title" style="color:var(--accent)">Tu semana</div>
+              <div class="sb-ph-element" style="border-left:3px solid var(--teal);"><span style="font-weight:600;color:var(--text);">Mar 10am</span> · Camila · Coworking · Huckleberry ✓</div>
+              <div class="sb-ph-element" style="border-left:3px solid var(--lavender);"><span style="font-weight:600;color:var(--text);">Mié 12pm</span> · Thomas · Almuerzo · Nuevo</div>
+              <div class="sb-ph-element" style="border-left:3px solid var(--accent);border-style:dashed;"><span style="font-weight:600;color:var(--accent);">Vie 3pm</span> · Wild card · ? · Acepta para descubrir</div>
+              <div style="text-align:center;padding:12px;background:var(--surface-3);border-radius:10px;">
+                <div style="font-size:11px;color:var(--text-muted);">Tu dieta social esta semana</div>
+                <div style="display:flex;justify-content:center;gap:16px;margin-top:6px;">
+                  <div style="text-align:center;"><div style="font-family:var(--serif);font-size:24px;color:var(--accent);">2</div><div style="font-size:9px;color:var(--text-muted);">sesiones</div></div>
+                  <div style="text-align:center;"><div style="font-family:var(--serif);font-size:24px;color:var(--teal);">2</div><div style="font-size:9px;color:var(--text-muted);">personas</div></div>
+                  <div style="text-align:center;"><div style="font-family:var(--serif);font-size:24px;color:var(--lavender);">2</div><div style="font-size:9px;color:var(--text-muted);">industrias</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sb-annotations">
+            <div class="sb-anno" style="background:var(--accent-dim);">
+              <div class="sb-anno-label" style="color:var(--accent)">🧠 Behavioral design</div>
+              <p><strong style="color:var(--text)">De app ocasional a hábito semanal.</strong> La agenda visual es el trigger externo. La "dieta social" gamifica sin presionar. El wild card del viernes genera anticipación toda la semana. <strong style="color:var(--text)">Investment:</strong> cada sesión completada mejora los matches futuros — el producto se vuelve más valioso con el uso.</p>
+            </div>
+            <div class="sb-anno" style="background:var(--surface-2);">
+              <div class="sb-anno-label" style="color:var(--lavender)">💡 Product thinking</div>
+              <p>La semana temática convierte JUNTO en estructura. Lunes con chilenos, martes con los de perros, miércoles con lectores. La persona ya no decide "¿me junto con alguien?" — decide "¿con cuál de las opciones de hoy?" Ese shift de opt-in a opt-out es la diferencia entre engagement y retención.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end sb-flow -->
+
+  <div class="callout" style="margin-top:32px;">
+    <p><strong>Para Nico:</strong> Este storyboard es el mapa de la experiencia — el QUÉ debería sentir el usuario en cada momento y POR QUÉ cada interacción está diseñada así. El CÓMO se ve visualmente es donde tu expertise entra. Cada una de estas pantallas es una invitación a que le pongas diseño, no una restricción.</p>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 7: SESSION BLUEPRINT               -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section">
+<div class="container">
+  <div class="section-num">07 — Session Blueprint</div>
+  <h2 class="section-title">Diseño de la sesión:<br>nada queda al azar</h2>
+  <p class="section-lead">No juntamos dos personas y las dejamos a su suerte. Remote workers con el músculo social atrofiado, estilos distintos, y ansiedad ante lo desconocido necesitan estructura. La app sugiere (no obliga) un blueprint para cada sesión.</p>
+
+  <div class="timeline">
+    <!-- Pre -->
+    <div class="tl-phase">
+      <div class="tl-tag" style="background:var(--surface-3);color:var(--text-dim)">Antes de juntarse</div>
+      <h3>Pre-sesión: mini-briefing del otro</h3>
+      <p>Cada persona ve el perfil + estilo de trabajo del otro: ¿silencio o conversación? ¿Breaks frecuentes? ¿Música? La app sugiere reglas base: "ambos prefieren bloques de 45 min" o "uno necesita breaks más frecuentes — sugerimos 25 min."</p>
+      <div class="board">
+        <div class="board-label">La ciencia</div>
+        <p>Inspirado en Airbnb (perfil del host antes de llegar). Eliminar incertidumbre reduce cortisol (hormona del estrés). Las personas llegan sabiendo qué esperar, lo que baja la barrera de ansiedad del primer encuentro.</p>
+        <p>Implicancia clave: la compatibilidad de estilos de trabajo debe ser variable del matching. Si uno necesita silencio absoluto y el otro hablar constantemente, ese match va a fallar aunque compartan 5 de 5 valores.</p>
+      </div>
+    </div>
+
+    <!-- Warm-up -->
+    <div class="tl-phase" style="border-left:3px solid var(--accent);">
+      <div class="tl-tag" style="background:var(--accent-dim);color:var(--accent)">Primeros 10 min · La fase más importante</div>
+      <h3>Warm-up: la app da las preguntas</h3>
+      <p>Preguntas concretas que rompen el hielo sin ser invasivas: "¿En qué estás trabajando hoy?" y "¿Qué es lo más interesante que te pasó esta semana?" Nadie tiene que inventar de qué hablar.</p>
+      <div class="board">
+        <div class="board-label">La ciencia</div>
+        <p>Las 9 conexiones cerebrales del estudio fNIRS solo se activan con contacto visual sostenido + escucha activa + respuesta emocional. El warm-up está diseñado para disparar los tres: te miran mientras responden (contacto visual), prestas atención (escucha activa), reaccionas (empatía).</p>
+        <p>Oxitocina (hormona de confianza y vínculo) se libera durante contacto visual y conexión emocionalmente sintonizada (Kosfeld et al. 2005). Reduce la respuesta de amenaza de la amígdala. El warm-up literalmente genera la química de la confianza, aunque el usuario no lo sepa.</p>
+        <p>Esto es crítico para generaciones jóvenes acostumbradas a interacciones digitales y poco a las cara a cara. La app les da la estructura que no tienen.</p>
+      </div>
+    </div>
+
+    <!-- Work -->
+    <div class="tl-phase" style="border-left:3px solid var(--teal);">
+      <div class="tl-tag" style="background:var(--teal-dim);color:var(--teal)">Bloque central</div>
+      <h3>Trabajo en paralelo: body doubling con estructura</h3>
+      <p>Cada uno trabaja en lo suyo. Bloques sugeridos: 45 min concentrado, 10 min break social. El que necesita concentración tiene 45 min sin interrupciones. El que necesita interacción tiene un momento definido. Ambos saben cuándo es trabajo y cuándo es conexión.</p>
+      <div class="board">
+        <div class="board-label">La ciencia</div>
+        <p>Facilitación social (Triplett, 1898): las personas rinden mejor cuando otros están presentes. Para ADHD: "La motivación se describe como basada en interés más que en importancia. La presencia social sutil puede aumentar la relevancia de una tarea lo suficiente como para cruzar el umbral de iniciación" (Barkley, 2014). La estructura reconoce que hay tanto valor en el silencio compartido como en la conversación.</p>
+        <p>Polyvagal theory (Stephen Porges): la presencia de otro genera un shift de hiperarousal a "calm engagement." Tu sistema nervioso se regula. Esto no necesita conversación — basta con que alguien esté ahí.</p>
+      </div>
+    </div>
+
+    <!-- Cool-down -->
+    <div class="tl-phase" style="border-left:3px solid var(--lavender);">
+      <div class="tl-tag" style="background:var(--lavender-dim);color:var(--lavender)">Últimos 10 min</div>
+      <h3>Cool-down: cristalizar la experiencia</h3>
+      <p>Ritual de cierre: cada persona comparte qué logró + pregunta de gratitud via tags tocables. Sin esto, la sesión termina con "bueno, chao" y se pierde la magia.</p>
+      <div class="board">
+        <div class="board-label">La ciencia</div>
+        <p>La persona se va pensando "logré cosas y la pasé bien" en vez de "estuve 3 horas al lado de un desconocido." Este momento alimenta el feedback que entrena al algoritmo Y entrena al usuario a buscar lo positivo — basado en coaching de gratitud. Con el tiempo, cambia cómo la persona percibe las interacciones sociales en general.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 8: FEATURE SET                     -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section">
+<div class="container">
+  <div class="section-num">08 — Feature set MVP</div>
+  <h2 class="section-title">Qué construir<br>y por qué</h2>
+  <p class="section-lead">Priorizado con MoSCoW. Cada feature incluye el "por qué" profundo. La idea es reaccionar juntos a cada Must Have con la complejidad técnica real y su timeline.</p>
+
+  <!-- MUST HAVE -->
+  <div class="feature-group">
+    <div class="feature-group-header" style="background:var(--accent-dim);color:var(--accent)">Must Have — Sin esto no hay producto</div>
+
+    <div class="feature">
+      <h4 style="color:var(--accent)">M1. Perfil psicológico via onboarding interactivo</h4>
+      <div class="what">Dos vías: (1) Prompt de IA para generar perfil profundo desde historial de conversaciones. (2) Ejercicios de coaching: valores en torneo visual, rueda de la vida con sliders, ikigai simplificado. Cada uno con explicación educativa. Progresivo en 3 capas: día 1 lo esencial, semana 1 preguntas tipo Hinge + "bring your data" básico, semana 3+ preguntas profundas opcionales.</div>
+      <div class="why"><strong>Por qué:</strong> La combinación de data estática (valores) + data dinámica (cómo reaccionas en situaciones) + data de IA genera un perfil tridimensional que no existe en ninguna plataforma. Los tests psicológicos miden rasgos estáticos ("eres introvertido") pero la compatibilidad es contextual. Las preguntas situacionales miden CÓMO REACCIONAS. El "bring your data" (Spotify Wrapped, home screen, subreddits) captura la persona real sin complejidad técnica de APIs cerradas. Cada dato compartido desbloquea algo visible al instante.</div>
+    </div>
+
+    <div class="feature">
+      <h4 style="color:var(--accent)">M2. Motor de matching por recomendación con explicación</h4>
+      <div class="what">Scoring ponderado: valores compartidos 35%, estilo de trabajo 25%, ubicación 20%, horarios 10%, tipo de trabajo 10%. 3-5 recomendaciones + 1 wild card. Cada una con explicación del match.</div>
+      <div class="why"><strong>Por qué:</strong> Diferenciador central. La explicación reduce ansiedad, da temas de conversación, y post-sesión se valida para mejorar el algoritmo. La persona no está obligada a juntarse — pero la forma de llegar al "no" es ver 4 opciones curadas, no scrollear 200 perfiles. La otra persona nunca se entera del rechazo. Para MVP el scoring ponderado es implementable rápido; la IA se incorpora cuando haya data real.</div>
+    </div>
+
+    <div class="feature">
+      <h4 style="color:var(--accent)">M3. Sesiones: coworking, social, y mixtas</h4>
+      <div class="what">Tres tipos: coworking (trabajo paralelo), social (almuerzo, café, caminata), mixta (trabajar + hacer algo). Tres lugares: mi casa, tu casa, público del directorio. Session Blueprint adaptativo.</div>
+      <div class="why"><strong>Por qué:</strong> El "after-work mode" (social) es puerta de entrada para ultra-concentrados que no quieren interacción durante trabajo. Las mejores conexiones a menudo se forman FUERA del contexto laboral porque las defensas bajan. Valida la hipótesis central: ¿la gente se junta con desconocidos recomendados por una app?</div>
+    </div>
+
+    <div class="feature">
+      <h4 style="color:var(--accent)">M4. Chat básico entre matches</h4>
+      <div class="what">Mensajería simple para coordinar detalles.</div>
+      <div class="why"><strong>Por qué:</strong> Sin chat, la gente pasa a WhatsApp — pierdes data de interacción y control del funnel. SDK existente (SendBird, Stream) para no reinventar la rueda.</div>
+    </div>
+
+    <div class="feature">
+      <h4 style="color:var(--accent)">M5. Feedback post-sesión: tags en 10 segundos</h4>
+      <div class="what">8-10 tags tocables ("buena conversación", "respetuoso con silencios", "me hizo pensar distinto", "quiero repetir") + validación de interacción real + mini encuesta del lugar con iconos.</div>
+      <div class="why"><strong>Por qué:</strong> Triple función diseñada por el board. (a) Entrena algoritmo: cada tag es señal medible. (b) Valida interacción: anti-fantasma. (c) Entrena al usuario a buscar lo positivo (coaching de gratitud). Hinge descubrió que prompts emocionales generan 10x más engagement que ratings numéricos. Completar feedback desbloquea más matches — la "moneda" de JUNTO.</div>
+    </div>
+
+    <div class="feature">
+      <h4 style="color:var(--accent)">M6. Directorio de lugares (crowdsourced)</h4>
+      <div class="what">Agregar y evaluar spots con 6 iconos tocables (wifi, enchufes, ruido, costo, "volvería") + "mood tags" ("bueno para conversaciones profundas" vs "bueno para silencio con compañía"). La app recomienda los mejores cercanos a ambos.</div>
+      <div class="why"><strong>Por qué:</strong> Resuelve "¿dónde nos juntamos?" con contenido que crece solo. Es el "third place engine" — reconecta al remote worker con su ciudad. Cada sesión es en un lugar distinto. Denver deja de ser donde duermes y se convierte en ecosistema de conexión. 15 segundos con el pulgar para evaluar.</div>
+    </div>
+
+    <div class="feature">
+      <h4 style="color:var(--accent)">M7. Agenda semanal temática</h4>
+      <div class="what">La app propone una semana estructurada. El usuario acepta, rechaza o modifica.</div>
+      <div class="why"><strong>Por qué:</strong> Convierte JUNTO de app ocasional a estructura semanal. Genera hábito. Ejemplo: lunes con chilenos, martes con los de perros, miércoles con lectores. Valida: ¿los remote workers quieren estructura social recurrente?</div>
+    </div>
+  </div>
+
+  <!-- SHOULD HAVE -->
+  <div class="feature-group">
+    <div class="feature-group-header" style="background:var(--teal-dim);color:var(--teal)">Should Have — Altamente deseable para v1</div>
+    <div class="feature">
+      <h4 style="color:var(--teal)">S1. Búsqueda/filtro por ubicación</h4>
+      <div class="what">Geolocalización básica para personas y lugares cercanos.</div>
+    </div>
+    <div class="feature">
+      <h4 style="color:var(--teal)">S2. Tips culturales pre-sesión</h4>
+      <div class="what">Tips prácticos al hacer match con alguien de otra cultura. Denver es multicultural — los choques culturales matan conexiones potenciales.</div>
+    </div>
+    <div class="feature">
+      <h4 style="color:var(--teal)">S3. "Bring your data" — data portability manual</h4>
+      <div class="what">Screenshots de Spotify Wrapped, home screen, subreddits, podcasts. Cada dato desbloquea algo al instante ("encontramos 3 personas que escuchan lo mismo"). Sin APIs cerradas — data manual voluntaria que es más valiosa.</div>
+    </div>
+  </div>
+
+  <!-- COULD HAVE -->
+  <div class="feature-group">
+    <div class="feature-group-header" style="background:var(--lavender-dim);color:var(--lavender)">Could Have — Interesante pero no crítico</div>
+    <div class="feature">
+      <h4 style="color:var(--lavender)">C1. Contactos del teléfono · C2. Login con LinkedIn · C3. Google Calendar</h4>
+      <div class="what">Útiles para growth y reducir fricción, pero no para la experiencia core. Google Calendar tiene la mejor relación costo-beneficio (API abierta, gratuita, estable). LinkedIn solo da datos básicos sin ser partner aprobado.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 9: ROADMAP + IDEAS BOARD           -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section">
+<div class="container">
+  <div class="section-num">09 — Roadmap</div>
+  <h2 class="section-title">Tres horizontes</h2>
+  <p class="section-lead">Cada fase se construye solo si la anterior funcionó.</p>
+
+  <div style="margin-top:40px;">
+    <div class="horizon" style="border-left:3px solid var(--accent);">
+      <div class="horizon-tag" style="background:var(--accent-dim);color:var(--accent)">Horizonte 1 · MVP v1 · 4-6 semanas</div>
+      <h3>¿La gente se junta con desconocidos recomendados?</h3>
+      <p class="question">"Testing con amigos y perfiles seed en Denver"</p>
+      <ul>
+        <li>Onboarding psicológico educativo y progresivo</li>
+        <li>Motor de matching con wild cards + explicación</li>
+        <li>Sesiones coworking/social/mixtas + Session Blueprint</li>
+        <li>Chat básico</li>
+        <li>Feedback tags tocables + validación</li>
+        <li>Directorio de lugares con mood tags</li>
+        <li>Agenda semanal temática</li>
+        <li>Tips culturales básicos + "Bring your data"</li>
+      </ul>
+    </div>
+
+    <div class="horizon" style="border-left:3px solid var(--teal);">
+      <div class="horizon-tag" style="background:var(--teal-dim);color:var(--teal)">Horizonte 2 · v2 · Meses 2-4</div>
+      <h3>¿Cómo se quedan y traen a más gente?</h3>
+      <p class="question">"Retención, comunidad, y el matching se vuelve inteligente"</p>
+      <ul>
+        <li>Social fitness tracker (tu "dieta social" semanal)</li>
+        <li>Serendipity mode (micro-encuentros casuales de 30 min)</li>
+        <li>Rituales de tribu (grupos recurrentes de 3-5 personas)</li>
+        <li>Mood matching diario</li>
+        <li>Impact report mensual (tipo Spotify Wrapped)</li>
+        <li>Success partners (objetivos compartidos)</li>
+        <li>Feedback 360 entre usuarios</li>
+        <li>Matching mejorado con IA + Google Calendar/Maps</li>
+      </ul>
+    </div>
+
+    <div class="horizon" style="border-left:3px solid var(--lavender);">
+      <div class="horizon-tag" style="background:var(--lavender-dim);color:var(--lavender)">Horizonte 3 · v3+ · Meses 4-12</div>
+      <h3>¿Cómo escalamos más allá del coworking?</h3>
+      <p class="question">"El motor de matching se libera"</p>
+      <ul>
+        <li>JUNTO AI Coworker (compañero virtual entre sesiones)</li>
+        <li>Matcher universal: emprendimiento, amistad, equipos</li>
+        <li>B2B: empresas que arman equipos sinérgicos</li>
+        <li>Expansión a otras ciudades US</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- IDEAS THAT EXCITED THE BOARD -->
+  <div class="spacer"></div>
+  <div class="section-num">Las ideas que más emocionaron al board</div>
+  <h2 class="section-title" style="font-size:clamp(28px,4vw,38px)">Lo que viene después<br>del MVP</h2>
+
+  <div class="grid-2" style="margin-top:32px;">
+    <div class="card" style="border-left:3px solid var(--accent);">
+      <h3 style="color:var(--accent)">Serendipity Mode</h3>
+      <p>Micro-encuentros de 30 min con alguien cercano y disponible ahora. Replica el pasillo de la oficina pero con personas seleccionadas por compatibilidad. Conecta con la investigación de Pixar y Cambridge: 70% de avances innovadores vienen de interacciones espontáneas.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--teal);">
+      <h3 style="color:var(--teal)">Social Fitness Tracker</h3>
+      <p>Tu "dieta social" semanal: interacciones, diversidad de personas, industrias nuevas, lugares. No como presión sino como consciencia. Nadie más está midiendo esto. Educa sobre un concepto nuevo: la interacción social como nutriente. "Tu dieta social esta semana: 3 sesiones, 3 personas, 2 industrias nuevas."</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--lavender);">
+      <h3 style="color:var(--lavender)">Rituales de Tribu</h3>
+      <p>Cuando 3+ personas se juntan recurrentemente, la app sugiere formar un "grupo JUNTO" con nombre, día fijo, y lugar favorito. Activa los mismos circuitos de pertenencia que la oficina — pero esta tribu la elegiste por compatibilidad real, no por organigrama.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--coral);">
+      <h3 style="color:var(--coral)">JUNTO AI Coworker</h3>
+      <p>Resuelve el momento más peligroso para retención: los días entre sesiones. Una presencia cálida con personalidad que pregunta cómo va tu día, te da tips, te cuenta datos. La data de esas conversaciones casuales alimenta el perfil orgánicamente sin formularios.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--green);">
+      <h3 style="color:var(--green)">Impact Report Mensual</h3>
+      <p>Tipo Spotify Wrapped: "Este mes te juntaste con 8 personas, de 5 industrias, en 4 lugares. Tu productividad percibida en días JUNTO fue 35% mayor." Hace tangible el valor invisible. Momento compartible en Instagram — growth orgánico.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--pink);">
+      <h3 style="color:var(--pink)">Success Partners</h3>
+      <p>Investigación: tener una cita de accountability con alguien da 95% de probabilidad de completar un objetivo. Después de varias sesiones, la app sugiere definir un objetivo compartido. Tu compañero de gimnasio pero para el trabajo.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 10: METRICS + HYPOTHESES + NEXT    -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section">
+<div class="container">
+  <div class="section-num">10 — Métricas & validación</div>
+  <h2 class="section-title">Cómo sabemos<br>si funciona</h2>
+  <p class="section-lead">KPIs para los primeros 30 días de testing en Denver.</p>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-name">MCW</div>
+      <div class="metric-target" style="color:var(--accent)">≥1</div>
+      <div class="metric-desc">sesiones positivas/semana</div>
+      <div class="metric-alarm" style="background:var(--coral-dim);color:var(--coral)">Alarma: &lt;0.5</div>
+    </div>
+    <div class="metric">
+      <div class="metric-name">Match accept</div>
+      <div class="metric-target" style="color:var(--teal)">&gt;60%</div>
+      <div class="metric-desc">matches aceptados</div>
+      <div class="metric-alarm" style="background:var(--coral-dim);color:var(--coral)">Alarma: &lt;30%</div>
+    </div>
+    <div class="metric">
+      <div class="metric-name">Conversión</div>
+      <div class="metric-target" style="color:var(--lavender)">&gt;50%</div>
+      <div class="metric-desc">match → sesión real</div>
+      <div class="metric-alarm" style="background:var(--coral-dim);color:var(--coral)">Alarma: &lt;25%</div>
+    </div>
+    <div class="metric">
+      <div class="metric-name">Retención 2w</div>
+      <div class="metric-target" style="color:var(--green)">&gt;40%</div>
+      <div class="metric-desc">activos a 14 días</div>
+      <div class="metric-alarm" style="background:var(--coral-dim);color:var(--coral)">Alarma: &lt;20%</div>
+    </div>
+    <div class="metric">
+      <div class="metric-name">NPS sesión</div>
+      <div class="metric-target" style="color:var(--accent)">&gt;8</div>
+      <div class="metric-desc">satisfacción /10</div>
+      <div class="metric-alarm" style="background:var(--coral-dim);color:var(--coral)">Alarma: &lt;6</div>
+    </div>
+    <div class="metric">
+      <div class="metric-name">Feedback</div>
+      <div class="metric-target" style="color:var(--teal)">&gt;70%</div>
+      <div class="metric-desc">sesiones con feedback</div>
+      <div class="metric-alarm" style="background:var(--coral-dim);color:var(--coral)">Alarma: &lt;40%</div>
+    </div>
+    <div class="metric">
+      <div class="metric-name">Wild cards</div>
+      <div class="metric-target" style="color:var(--lavender)">&gt;40%</div>
+      <div class="metric-desc">wild cards con fb positivo</div>
+      <div class="metric-alarm" style="background:var(--coral-dim);color:var(--coral)">Alarma: &lt;15%</div>
+    </div>
+    <div class="metric">
+      <div class="metric-name">Onboarding</div>
+      <div class="metric-target" style="color:var(--green)">&gt;75%</div>
+      <div class="metric-desc">completan onboarding</div>
+      <div class="metric-alarm" style="background:var(--coral-dim);color:var(--coral)">Alarma: &lt;50%</div>
+    </div>
+  </div>
+
+  <!-- HYPOTHESES -->
+  <div class="spacer"></div>
+  <h3 style="font-family:var(--serif);font-size:28px;margin-bottom:20px;">Hipótesis que el MVP tiene que validar</h3>
+  <div class="grid-2">
+    <div class="card"><h3>H1</h3><p>Las personas están dispuestas a juntarse con desconocidos recomendados por una app. <em style="color:var(--text-muted)">→ Tasa de aceptación + sesiones completadas</em></p></div>
+    <div class="card"><h3>H2</h3><p>Un onboarding de 5 min genera suficiente data para matches útiles. <em style="color:var(--text-muted)">→ Calidad reportada vs satisfacción post-sesión</em></p></div>
+    <div class="card"><h3>H3</h3><p>La gente prefiere que la app recomiende vs. elegir ellos. <em style="color:var(--text-muted)">→ Aceptación recomendados vs búsqueda libre</em></p></div>
+    <div class="card"><h3>H4</h3><p>Los wild cards generan experiencias positivas. <em style="color:var(--text-muted)">→ NPS wild cards vs matches regulares</em></p></div>
+    <div class="card"><h3>H5</h3><p>Desbloquear por interacción real es incentivo suficiente. <em style="color:var(--text-muted)">→ Retención sin monetización directa</em></p></div>
+    <div class="card"><h3>H6</h3><p>El Session Blueprint mejora la experiencia vs. sesiones sin estructura. <em style="color:var(--text-muted)">→ NPS con vs sin blueprint</em></p></div>
+  </div>
+
+  <!-- RISKS -->
+  <div class="spacer"></div>
+  <h3 style="font-family:var(--serif);font-size:28px;margin-bottom:20px;">Riesgos principales</h3>
+  <div class="grid-2">
+    <div class="card" style="border-left:3px solid var(--coral);"><h3>Cold Start</h3><p>La app necesita usuarios para funcionar. <strong style="color:var(--text)">Mitigación:</strong> arrancar hiperlocal en Denver con perfiles seed + convenios con coworkings/bibliotecas.</p></div>
+    <div class="card" style="border-left:3px solid var(--coral);"><h3>Seguridad</h3><p>Conectamos desconocidos en casas privadas. <strong style="color:var(--text)">Mitigación:</strong> verificación de identidad, sistema de reporte, lugares públicos como default.</p></div>
+    <div class="card" style="border-left:3px solid var(--coral);"><h3>Retención post-match</h3><p>Si conectan, se van a WhatsApp. <strong style="color:var(--text)">Mitigación:</strong> el valor es el flujo constante de nuevas conexiones + agenda semanal.</p></div>
+    <div class="card" style="border-left:3px solid var(--coral);"><h3>Primera sesión</h3><p>Si la primera es incómoda, no vuelven. <strong style="color:var(--text)">Mitigación:</strong> Session Blueprint + compatibilidad de estilos en el matching.</p></div>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div class="spacer"></div>
+  <div class="section-num">Preguntas abiertas</div>
+  <h2 class="section-title" style="font-size:clamp(28px,4vw,38px)">Lo que necesitamos<br>resolver juntos</h2>
+  <p class="section-lead" style="margin-bottom:32px;">No hay opiniones formadas — es punto de partida para la conversación.</p>
+
+  <div class="questions">
+    <div class="question-group">
+      <h3>Plataforma</h3>
+      <div class="question-item">¿App nativa (iOS primero?) o web app/PWA? Considerando que arrancamos en Denver y necesitamos velocidad.</div>
+      <div class="question-item">¿React Native, Flutter, o nativo puro? Pensando en Android después.</div>
+    </div>
+    <div class="question-group">
+      <h3>Matching</h3>
+      <div class="question-item">¿El scoring ponderado es implementable rápido? ¿Hay un approach mejor?</div>
+      <div class="question-item">¿Cómo manejar el cold start técnicamente? ¿Perfiles seed? ¿Matching más amplio con pocos usuarios?</div>
+    </div>
+    <div class="question-group">
+      <h3>Integraciones</h3>
+      <div class="question-item">¿Para el chat, SDK externo o build propio? Costo vs. control.</div>
+      <div class="question-item">¿Google Maps API o MapBox para el directorio?</div>
+      <div class="question-item">¿Google Calendar API en el MVP o después? Es gratuita y estable.</div>
+    </div>
+    <div class="question-group">
+      <h3>Arquitectura</h3>
+      <div class="question-item">¿Qué decisiones tomar ahora para no bloquearnos al expandir a otros tipos de matching?</div>
+      <div class="question-item">¿Cómo almacenar los perfiles psicológicos? Estructura de datos que escale para nuevos ejercicios.</div>
+    </div>
+    <div class="question-group">
+      <h3>Timeline</h3>
+      <div class="question-item">Dado todo esto, ¿cuánto puede tomar un MVP testeable? ¿Qué se sacaría de los Must Have para ir más rápido?</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 11: GO TO MARKET                   -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section">
+<div class="container">
+  <div class="section-num">11 — Go-to-Market</div>
+  <h2 class="section-title">Cold start strategy</h2>
+
+  <div style="margin-top:32px;">
+    <div class="tl-phase" style="border-left:3px solid var(--accent);">
+      <div class="tl-tag" style="background:var(--accent-dim);color:var(--accent)">Fase 0 · Semanas 1-2</div>
+      <h3>Testing interno</h3>
+      <p>Nosotros + 15-20 amigos/conocidos en Denver que trabajen remoto. Perfiles complementarios para asegurar matches. Objetivo: cada tester completa 3 sesiones y da feedback honesto.</p>
+    </div>
+    <div class="tl-phase" style="border-left:3px solid var(--teal);">
+      <div class="tl-tag" style="background:var(--teal-dim);color:var(--teal)">Fase 1 · Semanas 3-8</div>
+      <h3>Denver hiperlocal</h3>
+      <p>Amigos de amigos. Red de confianza expandida. Explorar convenios con coworkings, bibliotecas (Belmar Park como piloto), comunidades de remote workers.</p>
+    </div>
+    <div class="tl-phase" style="border-left:3px solid var(--lavender);">
+      <div class="tl-tag" style="background:var(--lavender-dim);color:var(--lavender)">En paralelo</div>
+      <h3>Contenido</h3>
+      <p>Canal YouTube/Instagram/TikTok visitando spots de coworking en Denver. Contenido dirigido a los dolores del remote worker. Decisión pendiente: ¿crecer desde Denver o estrategia transversal?</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- FOOTER                                     -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="footer">
+<div class="container">
+  <div class="footer-note">
+    <h3 style="font-family:var(--serif);font-size:24px;margin-bottom:12px;color:var(--accent)">Próximos pasos</h3>
+    <p>1. Leer este documento y marcar lo que genere dudas, desacuerdo, o ideas nuevas.</p>
+    <p>2. Juntarnos presencial y definir juntos: alcance real del MVP, timeline, stack técnico.</p>
+    <p>3. Firmar el acuerdo de co-fundadores y arrancar.</p>
+    <p style="margin-top:16px;font-style:italic;">Este documento es un draft vivo. No se espera construir todo lo que está aquí — es el punto de partida para que, con ambas perspectivas, definamos el MVP más inteligente posible. Lo que podríamos estar construyendo no es solo una app de coworking: es el principio de algo que puede cambiar cómo las personas se conectan.</p>
+  </div>
+  <p style="text-align:center;font-size:13px;color:var(--text-muted);margin-top:32px;">JUNTO · MVP Product Brief v2.0 · Abril 2026 · Denver, Colorado<br>Documento generado con apoyo de Claude (Anthropic) como herramienta de estructuración y research.</p>
+</div>
+</section>
+
+<div style="height:60px;"></div>
+</body>
+</html>

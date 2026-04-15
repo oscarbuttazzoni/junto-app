@@ -1,26 +1,93 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════
+   JUNTO Design System
+   Colors from the MVP Product Brief v2
+   ═══════════════════════════════════════════ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Backgrounds */
+  --bg: #0C0C0E;
+  --surface: #151518;
+  --surface-2: #1C1C21;
+  --surface-3: #222228;
+
+  /* Borders */
+  --border: #2A2A30;
+  --border-light: #35353D;
+
+  /* Text */
+  --text: #E8E6E1;
+  --text-dim: #8A8A8F;
+  --text-muted: #5A5A60;
+
+  /* Brand colors */
+  --accent: #F0C456;
+  --accent-dim: rgba(240, 196, 86, 0.10);
+  --accent-border: rgba(240, 196, 86, 0.2);
+
+  --coral: #E8735A;
+  --coral-dim: rgba(232, 115, 90, 0.10);
+  --coral-border: rgba(232, 115, 90, 0.2);
+
+  --teal: #56C4B8;
+  --teal-dim: rgba(86, 196, 184, 0.10);
+  --teal-border: rgba(86, 196, 184, 0.2);
+
+  --lavender: #9B8FE8;
+  --lavender-dim: rgba(155, 143, 232, 0.10);
+  --lavender-border: rgba(155, 143, 232, 0.2);
+
+  --green: #6BCB77;
+  --green-dim: rgba(107, 203, 119, 0.10);
+
+  --pink: #E88FA0;
+  --pink-dim: rgba(232, 143, 160, 0.10);
 }
 
+/* Map CSS vars to Tailwind theme */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-border: var(--border);
+  --color-border-light: var(--border-light);
+  --color-text: var(--text);
+  --color-text-dim: var(--text-dim);
+  --color-text-muted: var(--text-muted);
+  --color-accent: var(--accent);
+  --color-accent-dim: var(--accent-dim);
+  --color-accent-border: var(--accent-border);
+  --color-coral: var(--coral);
+  --color-coral-dim: var(--coral-dim);
+  --color-coral-border: var(--coral-border);
+  --color-teal: var(--teal);
+  --color-teal-dim: var(--teal-dim);
+  --color-teal-border: var(--teal-border);
+  --color-lavender: var(--lavender);
+  --color-lavender-dim: var(--lavender-dim);
+  --color-lavender-border: var(--lavender-border);
+  --color-green: var(--green);
+  --color-green-dim: var(--green-dim);
+  --color-pink: var(--pink);
+  --color-pink-dim: var(--pink-dim);
+  --font-serif: "Instrument Serif", Georgia, serif;
+  --font-sans: "DM Sans", -apple-system, sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Remove tap highlight on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
 }
